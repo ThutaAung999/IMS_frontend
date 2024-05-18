@@ -111,26 +111,6 @@
       "id": 11
     },
     {
-      "name": "test1",
-      "brand": "Bdfdfdf",
-      "category": "Other...",
-      "price": 4343,
-      "description": "dfdfdfdfdfdf",
-      "imageFileName": "1715817095706_2024-1.jfif",
-      "createdAt": "2024-05-15T23:51:35.710Z",
-      "id": 12
-    },
-    {
-      "name": "Test2",
-      "brand": "Sfdddf1",
-      "category": "Other...",
-      "price": 11111,
-      "description": "Description....",
-      "imageFileName": "1715868200291_2024-1.jfif",
-      "createdAt": "2024-05-16T14:03:20.292Z",
-      "id": 13
-    },
-    {
       "name": "Test4",
       "brand": "Apple",
       "category": "Other...",
