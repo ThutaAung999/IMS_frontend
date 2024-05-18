@@ -66,7 +66,7 @@ export default function ProductList(){
 
                                         <td style={{width:"10px" , whiteSpace:"noWrap"}}>
                                             <Link className="btn btn-primary btn-sm me-1"
-                                               to={"/admin/products/edit/"+product.id}>Edit</Link>
+                                               to={"/admin/products/update/"+product.id}>Edit</Link>
                                             <button type="button" className="btn btn-danger btn-sm">Delete</button>
                                         </td>
                                     </tr>

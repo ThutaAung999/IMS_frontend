@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import {QueryClient,QueryClientProvider} from "@tanstack/react-query";
 import ProductList from "./pages/admin/products/ProductList";
 import CreateProduct from "./pages/admin/products/CreateProduct";
+import UpdateProduct from "./pages/admin/products/UpdateProduct";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ function App(){
                 <Route path="/contact" element={<Contact/>}/>
                 <Route path="/admin/products" element={<ProductList/>}/>
                 <Route path="/admin/products/create" element={<CreateProduct/>}/>
+                <Route path="/admin/products/update/:id" element={<UpdateProduct/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
             <Footer/>
