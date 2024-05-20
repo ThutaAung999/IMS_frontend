@@ -5,7 +5,9 @@ export default function ProductList(){
     const [products,setProducts]=useState([]);
 
     function getProducts(){
-        fetch("http://localhost:3004/products")
+
+       // fetch("http://localhost:3004/products")
+        fetch("http://localhost:9999/api/products")
             .then(response=>{
                     if(response.ok){
                         return response.json();
@@ -78,12 +80,15 @@ export default function ProductList(){
                                         <td>{product.brand}</td>
                                         <td>{product.category}</td>
                                         <td>{product.price}$</td>
-                                        <td><img src={"http://localhost:3004/images/"+product.imageFileName} alt="..." width="100"/></td>
+                                        <td>
+                                        {/*    <img src={"http://localhost:3004/images/"+product.imageFileName} alt="..." width="100"/>*/}
+                                            <img src={"http://localhost:9999/images/"+product.imageFileName} alt="..." width="100"/>
+                                        </td>
                                         <td>{product.createdAt.slice(0,10)}</td>
 
                                         <td style={{width:"10px" , whiteSpace:"noWrap"}}>
                                             <Link className="btn btn-primary btn-sm me-1"
-                                               to={"/admin/products/update/"+product.id}>Edit</Link>
+                                               to={"/admin/products/update/"+product.id}>Update</Link>
                                             <button type="button" className="btn btn-danger btn-sm"
                                                 onClick={()=>deleteProduct(product.id)}>Delete</button>
                                         </td>

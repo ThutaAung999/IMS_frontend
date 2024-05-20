@@ -12,7 +12,8 @@ export default function UpdateProduct() {
 
 
     function  getProduct(){
-        fetch("http://localhost:3004/products/"+params.id)
+        //fetch("http://localhost:3004/products/"+params.id)
+        fetch("http://localhost:9999/api/products"+params.id)
             .then(response=>{
                 if(response.ok){
                     return response.json()
@@ -43,7 +44,9 @@ export default function UpdateProduct() {
         }
 
         try {
-            const response = await fetch("http://localhost:3004/products/"+params.id , {
+            //const response = await fetch("http://localhost:3004/products/"+params.id , {
+            const response = await fetch("http://localhost:9999/api/products"+params.id , {
+
                 method: "PATCH",
                 body: formData,
                 headers: {

@@ -6,9 +6,9 @@
       "brand": "MSI",
       "category": "Computers",
       "description": "description about MSI  mother board ",
-      "price": "999",
+      "price": "5565",
       "imageFileName": "1716019953720_2024-1.jfif",
-      "createdAt": "2024-02-12T17:49:43:33.8900000"
+      "createdAt": "2024-02-12T17:49:43.890Z"
     },
     {
       "id": 2,
@@ -16,9 +16,9 @@
       "brand": "MSI",
       "category": "Computers",
       "description": "description about MSI  mother board ",
-      "price": 999,
-      "imageFileName": "msiMotherboard.jpg",
-      "createdAt": "2024-02-12T17:49:43:33.8900000"
+      "price": "999",
+      "imageFileName": "1716188790401_type of data structure.jpg",
+      "createdAt": "2024-02-12T17:49:43.890Z"
     },
     {
       "id": 3,
@@ -26,9 +26,9 @@
       "brand": "MSI",
       "category": "Computers",
       "description": "description about MSI  mother board ",
-      "price": 999,
-      "imageFileName": "msiMotherboard.jpg",
-      "createdAt": "2024-02-12T17:49:43:33.8900000"
+      "price": "999",
+      "imageFileName": "1716188826967_MySQL.jpg",
+      "createdAt": "2024-02-12T17:49:43.890Z"
     },
     {
       "id": 4,
@@ -38,7 +38,7 @@
       "description": "description about MSI  mother board ",
       "price": 999,
       "imageFileName": "msiMotherboard.jpg",
-      "createdAt": "2024-02-12T17:49:43:33.8900000"
+      "createdAt": "2024-02-12T17:49:43.890Z"
     },
     {
       "id": 5,
@@ -48,7 +48,7 @@
       "description": "description about MSI  mother board ",
       "price": 999,
       "imageFileName": "msiMotherboard.jpg",
-      "createdAt": "2024-02-12T17:49:43:33.8900000"
+      "createdAt": "2024-02-12T17:49:43.890Z"
     },
     {
       "id": 6,
@@ -58,7 +58,7 @@
       "description": "description about MSI  mother board ",
       "price": 999,
       "imageFileName": "msiMotherboard.jpg",
-      "createdAt": "2024-02-12T17:49:43:33.8900000"
+      "createdAt": "2024-02-12T17:49:43.890Z"
     },
     {
       "id": 7,
@@ -68,7 +68,7 @@
       "description": "description about MSI  mother board ",
       "price": 999,
       "imageFileName": "msiMotherboard.jpg",
-      "createdAt": "2024-02-12T17:49:43:33.8900000"
+      "createdAt": "2024-02-12T17:49:43.890Z"
     },
     {
       "id": 8,
@@ -78,7 +78,7 @@
       "description": "description about MSI  mother board ",
       "price": 999,
       "imageFileName": "msiMotherboard.jpg",
-      "createdAt": "2024-02-12T17:49:43:33.8900000"
+      "createdAt": "2024-02-12T17:49:43.890Z"
     },
     {
       "id": 9,
@@ -88,7 +88,7 @@
       "description": "description about MSI  mother board ",
       "price": 999,
       "imageFileName": "msiMotherboard.jpg",
-      "createdAt": "2024-02-12T17:49:43:33.8900000"
+      "createdAt": "2024-02-12T17:49:43.890Z"
     },
     {
       "id": 10,
@@ -98,7 +98,7 @@
       "description": "description about MSI  mother board ",
       "price": 999,
       "imageFileName": "msiMotherboard.jpg",
-      "createdAt": "2024-02-12T17:49:43:33.8900000"
+      "createdAt": "2024-02-12T17:49:43.890Z"
     },
     {
       "name": "Samsung",
@@ -119,6 +119,26 @@
       "imageFileName": "1715941179398_2024-1.jfif",
       "createdAt": "2024-05-17T10:19:39.399Z",
       "id": 14
+    },
+    {
+      "name": "Glaxy1",
+      "brand": "Samsung",
+      "category": "Phones",
+      "price": 3434,
+      "description": "This is description for glaxy",
+      "imageFileName": "1716151705093_2024-1.jfif",
+      "createdAt": "2024-05-19T20:48:25.099Z",
+      "id": 15
+    },
+    {
+      "name": "Mac Book",
+      "brand": "Apple",
+      "category": "Computers",
+      "price": 3334,
+      "description": "This is description",
+      "imageFileName": "1716188347066_2024-1.jfif",
+      "createdAt": "2024-05-20T06:59:07.078Z",
+      "id": 16
     }
   ]
 }
