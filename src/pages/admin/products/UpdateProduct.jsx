@@ -12,8 +12,11 @@ export default function UpdateProduct() {
 
 
     function  getProduct(){
+        console.log('params :',params)
+        console.log("params.id :", params.id);
         //fetch("http://localhost:3004/products/"+params.id)
-        fetch("http://localhost:9999/api/products"+params.id)
+        //fetch("http://localhost:9999/api/products"+params.id)
+        fetch(`http://localhost:9999/api/products/${params.id}`)
             .then(response=>{
                 if(response.ok){
                     return response.json()
@@ -28,8 +31,12 @@ export default function UpdateProduct() {
         })
     }
 
-    useEffect(getProduct,[])
 
+    //useEffect(getProduct,[])
+
+    useEffect(() => {
+        getProduct();
+    }, [params._id]);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -45,9 +52,9 @@ export default function UpdateProduct() {
 
         try {
             //const response = await fetch("http://localhost:3004/products/"+params.id , {
-            const response = await fetch("http://localhost:9999/api/products"+params.id , {
+            const response = await fetch("http://localhost:9999/api/products/"+params.id , {
 
-                method: "PATCH",
+                method: "PUT",
                 body: formData,
                 headers: {
                     // Assuming your server can handle form data correctly without needing Content-Type for multipart form-data
@@ -140,7 +147,7 @@ export default function UpdateProduct() {
 
                         <div className="row mb-3">
                             <div className="offset-sm-4 col-sm-8">
-                                <img src={"http://localhost:3004/images/"+ initialData.imageFileName}  width="160" alt="..."/>
+                                <img src={"http://localhost:9999/images/"+ initialData.imageFileName}  width="160" alt="..."/>
                             </div>
                         </div>
 
