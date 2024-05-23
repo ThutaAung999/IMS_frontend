@@ -1,8 +1,14 @@
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function ProductList(){
     const [products,setProducts]=useState([]);
+    
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const itemsPerPage = 10;
 
     function getProducts(){
 
@@ -39,6 +45,24 @@ export default function ProductList(){
                 alert("Unable to delete the product")
             })
     }
+
+
+    function handleDelete(id) {
+        confirmAlert({
+            title: 'Confirm to delete',
+            message: 'Are you sure you want to delete this product?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => deleteProduct(id)
+                },
+                {
+                    label: 'No'
+                }
+            ]
+        });
+    }
+
 
 
     return(
@@ -90,7 +114,7 @@ export default function ProductList(){
                                             <Link className="btn btn-primary btn-sm me-1"
                                                to={"/admin/products/update/"+product._id}>Update</Link>
                                             <button type="button" className="btn btn-danger btn-sm"
-                                                onClick={()=>deleteProduct(product._id)}>Delete</button>
+                                                onClick={()=>handleDelete(product._id)}>Delete</button>
                                         </td>
                                     </tr>
                                 );
