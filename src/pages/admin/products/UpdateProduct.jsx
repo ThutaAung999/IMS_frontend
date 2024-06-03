@@ -2,6 +2,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
+import {updateProduct} from '../../../services/productService';
+
 const fetchProduct = async ({ queryKey }) => {
     const [, id] = queryKey;
     const response = await fetch(`http://localhost:9999/api/products/${id}`);
@@ -11,17 +13,6 @@ const fetchProduct = async ({ queryKey }) => {
     return response.json();
 };
 
-const updateProduct = async ({ id, formData }) => {
-    const response = await fetch(`http://localhost:9999/api/products/${id}`, {
-        method: "PUT",
-        body: formData,
-    });
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-    }
-    return response.json();
-};
 
 export default function UpdateProduct() {
     const { id } = useParams();

@@ -1,20 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-const createProduct = async (formData) => {
-    const response = await fetch("http://localhost:9999/api/products", {
-        method: "POST",
-        body: formData,
-    });
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-    }
-    return response.json();
-};
+import { createProduct } from '../../../services/productService';
+import productSchema from '../../../schemas/ProductSchema';
+import { z } from 'zod';
 
 export default function CreateProduct() {
+    const [formData, setFormData] = useState({
+        name: '',
+        brand: '',
+        category: '',
+        price: '',
+        description: '',
+        image: null
+    });
     const [validationErrors, setValidationErrors] = useState({});
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -31,18 +30,50 @@ export default function CreateProduct() {
         },
     });
 
+    const handleInputChange = (event) => {
+        const { name, value, files } = event.target;
+        const newValue = files ? files[0] : value;
+
+        // If the field being updated is 'price', convert the value to a number
+        const updatedValue = name === 'price' ? parseFloat(newValue) : newValue;
+
+        // Update formData state
+        setFormData({
+            ...formData,
+            [name]: updatedValue
+        });
+
+        // Validate the updated field
+        const partialData = { ...formData, [name]: updatedValue };
+        const result = productSchema.safeParse(partialData);
+
+        if (!result.success) {
+            const fieldErrors = result.error.flatten().fieldErrors;
+            setValidationErrors(fieldErrors);
+        } else {
+            setValidationErrors({});
+        }
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const formData = new FormData(event.target);
 
-        // Validation
-        const product = Object.fromEntries(formData.entries());
-        if (!product.name || !product.brand || !product.category || !product.price || !product.description || !product.image) {
-            alert("Please fill all the fields");
+        const result = productSchema.safeParse(formData);
+
+        if (!result.success) {
+            const fieldErrors = result.error.flatten().fieldErrors;
+            setValidationErrors(fieldErrors);
             return;
         }
 
-        mutation.mutate(formData);
+        setValidationErrors({});
+
+        const submitData = new FormData();
+        for (const key in formData) {
+            submitData.append(key, formData[key]);
+        }
+
+        mutation.mutate(submitData);
     };
 
     return (
@@ -55,7 +86,13 @@ export default function CreateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Name</label>
                             <div className="col-sm-8">
-                                <input type="text" className="form-control" name="name" />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                />
                                 <span className="text-danger">{validationErrors.name}</span>
                             </div>
                         </div>
@@ -63,7 +100,13 @@ export default function CreateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Brand</label>
                             <div className="col-sm-8">
-                                <input type="text" className="form-control" name="brand" />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="brand"
+                                    value={formData.brand}
+                                    onChange={handleInputChange}
+                                />
                                 <span className="text-danger">{validationErrors.brand}</span>
                             </div>
                         </div>
@@ -71,8 +114,13 @@ export default function CreateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Category</label>
                             <div className="col-sm-8">
-                                <select className="form-select" name="category">
-                                    <option value="Other...">Other...</option>
+                                <select
+                                    className="form-select"
+                                    name="category"
+                                    value={formData.category}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="">Select...</option>
                                     <option value="Phones">Phones</option>
                                     <option value="Computers">Computers</option>
                                     <option value="Accessories">Accessories</option>
@@ -86,7 +134,15 @@ export default function CreateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Price</label>
                             <div className="col-sm-8">
-                                <input type="number" className="form-control" name="price" step="0.01" min="1" />
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    name="price"
+                                    step="0.01"
+                                    min="1"
+                                    value={formData.price}
+                                    onChange={handleInputChange}
+                                />
                                 <span className="text-danger">{validationErrors.price}</span>
                             </div>
                         </div>
@@ -94,7 +150,13 @@ export default function CreateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Description</label>
                             <div className="col-sm-8">
-                                <textarea className="form-control" rows="4" name="description"></textarea>
+                                <textarea
+                                    className="form-control"
+                                    rows="4"
+                                    name="description"
+                                    value={formData.description}
+                                    onChange={handleInputChange}
+                                ></textarea>
                                 <span className="text-danger">{validationErrors.description}</span>
                             </div>
                         </div>
@@ -102,7 +164,12 @@ export default function CreateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Image</label>
                             <div className="col-sm-8">
-                                <input type="file" className="form-control" name="image" />
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    name="image"
+                                    onChange={handleInputChange}
+                                />
                                 <span className="text-danger">{validationErrors.image}</span>
                             </div>
                         </div>

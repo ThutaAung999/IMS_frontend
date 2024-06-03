@@ -1,23 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import {Navbar, Footer} from './components/layout'
+import {Footer, Navbar} from './components/layout'
 import Home from "./pages/Home";
-import {BrowserRouter,Route,Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
-//React Query
-import {QueryClient,QueryClientProvider} from "@tanstack/react-query";
 import ProductList from "./pages/admin/products/ProductList";
 import CreateProduct from "./pages/admin/products/CreateProduct";
 import UpdateProduct from "./pages/admin/products/UpdateProduct";
 
+//React Query
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+
 const queryClient = new QueryClient();
 
 
-
-
-function App(){
+function App() {
     return (
         <BrowserRouter>
             <Navbar/>
@@ -31,13 +30,13 @@ function App(){
             </Routes>
             <Footer/>
         </BrowserRouter>
-        );
+    );
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-    <App />
-      </QueryClientProvider>
-  </React.StrictMode>,
+    <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <App/>
+        </QueryClientProvider>
+    </React.StrictMode>,
 )
