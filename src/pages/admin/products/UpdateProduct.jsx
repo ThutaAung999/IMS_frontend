@@ -1,13 +1,11 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateProduct } from '../../../services/productService';
-import productSchema from '../../../schemas/ProductSchema';
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from 'react';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {updateProduct} from '../../../services/productService';
 
-const fetchProduct = async ({ queryKey }) => {
+const fetchProduct = async ({queryKey}) => {
     const [, id] = queryKey;
     const response = await fetch(`http://localhost:9999/api/products/${id}`);
-    console.log("Response :", response);
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
@@ -15,22 +13,17 @@ const fetchProduct = async ({ queryKey }) => {
 };
 
 export default function UpdateProduct() {
-    const { id } = useParams();
+    const {id} = useParams();
     const [validationErrors, setValidationErrors] = useState({});
-    const [imagePreview, setImagePreview] = useState(null);
+
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const { data: initialData, error, isLoading } = useQuery({
+    const {data: initialData, error, isLoading} = useQuery({
         queryKey: ['product', id],
         queryFn: fetchProduct
     });
 
-    useEffect(() => {
-        if (initialData?.image) {
-            setImagePreview(initialData.image);
-        }
-    }, [initialData]);
 
     const mutation = useMutation({
         mutationFn: updateProduct,
@@ -51,28 +44,10 @@ export default function UpdateProduct() {
 
         const imageFile = formData.get('image');
         if (!imageFile || imageFile.size === 0) {
-            formData.set('image', initialData.image); // Use existing image if no new image is provided
+            formData.delete('image'); // Remove image key if no new image is provided
         }
 
-        const data = {
-            name: formData.get('name'),
-            brand: formData.get('brand'),
-            category: formData.get('category'),
-            price: parseFloat(formData.get('price')),
-            description: formData.get('description'),
-            image: formData.get('image')
-        };
-
-        const result = productSchema.safeParse(data);
-
-        if (!result.success) {
-            const fieldErrors = result.error.flatten().fieldErrors;
-            setValidationErrors(fieldErrors);
-            return;
-        }
-
-        setValidationErrors({});
-        mutation.mutate({ id, formData });
+        mutation.mutate({id, formData});
     };
 
     const handleImageChange = (event) => {
@@ -100,7 +75,8 @@ export default function UpdateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Name</label>
                             <div className="col-sm-8">
-                                <input type="text" className="form-control" name="name" defaultValue={initialData.name} />
+                                <input type="text" className="form-control" name="name"
+                                       defaultValue={initialData.name}/>
                                 <span className="text-danger">{validationErrors.name}</span>
                             </div>
                         </div>
@@ -108,7 +84,8 @@ export default function UpdateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Brand</label>
                             <div className="col-sm-8">
-                                <input type="text" className="form-control" name="brand" defaultValue={initialData.brand} />
+                                <input type="text" className="form-control" name="brand"
+                                       defaultValue={initialData.brand}/>
                                 <span className="text-danger">{validationErrors.brand}</span>
                             </div>
                         </div>
@@ -131,7 +108,8 @@ export default function UpdateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Price</label>
                             <div className="col-sm-8">
-                                <input type="number" className="form-control" name="price" step="0.01" min="1" defaultValue={initialData.price} />
+                                <input type="number" className="form-control" name="price" step="0.01" min="1"
+                                       defaultValue={initialData.price}/>
                                 <span className="text-danger">{validationErrors.price}</span>
                             </div>
                         </div>
@@ -139,7 +117,8 @@ export default function UpdateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Description</label>
                             <div className="col-sm-8">
-                                <textarea className="form-control" rows="4" name="description" defaultValue={initialData.description}></textarea>
+                                <textarea className="form-control" rows="4" name="description"
+                                          defaultValue={initialData.description}></textarea>
                                 <span className="text-danger">{validationErrors.description}</span>
                             </div>
                         </div>
@@ -147,10 +126,10 @@ export default function UpdateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Image</label>
                             <div className="col-sm-8">
-                                <input type="file" className="form-control" name="image" onChange={handleImageChange} />
-                                {imagePreview && (
-                                    <img src={imagePreview} alt="Preview" style={{ width: '100%', marginTop: '10px' }} />
-                                )}
+                                <input type="file" className="form-control" name="image" onChange={handleImageChange}/>
+                                <p style={{color:"blue"}}>Please re-choice  the image...</p>
+                                <img src={"http://localhost:9999/images/" + initialData.imageFileName} width="160"
+                                     alt="..."/>
                                 <span className="text-danger">{validationErrors.image}</span>
                             </div>
                         </div>
