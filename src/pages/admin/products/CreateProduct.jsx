@@ -14,6 +14,7 @@ export default function CreateProduct() {
         description: '',
         image: null
     });
+
     const [validationErrors, setValidationErrors] = useState({});
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -29,6 +30,7 @@ export default function CreateProduct() {
             setValidationErrors(errorData);
         },
     });
+
 
     const handleInputChange = (event) => {
         const { name, value, files } = event.target;

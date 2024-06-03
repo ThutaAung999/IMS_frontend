@@ -1,22 +1,23 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-import {updateProduct} from '../../../services/productService';
+import { updateProduct } from '../../../services/productService';
+import productSchema from '../../../schemas/ProductSchema';
 
 const fetchProduct = async ({ queryKey }) => {
     const [, id] = queryKey;
     const response = await fetch(`http://localhost:9999/api/products/${id}`);
+    console.log("Response :", response);
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
     return response.json();
 };
 
-
 export default function UpdateProduct() {
     const { id } = useParams();
     const [validationErrors, setValidationErrors] = useState({});
+    const [imagePreview, setImagePreview] = useState(null);
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
@@ -24,6 +25,12 @@ export default function UpdateProduct() {
         queryKey: ['product', id],
         queryFn: fetchProduct
     });
+
+    useEffect(() => {
+        if (initialData?.image) {
+            setImagePreview(initialData.image);
+        }
+    }, [initialData]);
 
     const mutation = useMutation({
         mutationFn: updateProduct,
@@ -39,8 +46,46 @@ export default function UpdateProduct() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
         const formData = new FormData(event.target);
+
+        const imageFile = formData.get('image');
+        if (!imageFile || imageFile.size === 0) {
+            formData.set('image', initialData.image); // Use existing image if no new image is provided
+        }
+
+        const data = {
+            name: formData.get('name'),
+            brand: formData.get('brand'),
+            category: formData.get('category'),
+            price: parseFloat(formData.get('price')),
+            description: formData.get('description'),
+            image: formData.get('image')
+        };
+
+        const result = productSchema.safeParse(data);
+
+        if (!result.success) {
+            const fieldErrors = result.error.flatten().fieldErrors;
+            setValidationErrors(fieldErrors);
+            return;
+        }
+
+        setValidationErrors({});
         mutation.mutate({ id, formData });
+    };
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setImagePreview(initialData?.image || null);
+        }
     };
 
     if (isLoading) return <div>Loading...</div>;
@@ -102,7 +147,10 @@ export default function UpdateProduct() {
                         <div className="row mb-3">
                             <label className="col-sm-4 col-form-label">Image</label>
                             <div className="col-sm-8">
-                                <input type="file" className="form-control" name="image" />
+                                <input type="file" className="form-control" name="image" onChange={handleImageChange} />
+                                {imagePreview && (
+                                    <img src={imagePreview} alt="Preview" style={{ width: '100%', marginTop: '10px' }} />
+                                )}
                                 <span className="text-danger">{validationErrors.image}</span>
                             </div>
                         </div>
