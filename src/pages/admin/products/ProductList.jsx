@@ -4,21 +4,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-const fetchProducts = async () => {
-    const response = await fetch("http://localhost:9999/api/products");
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return response.json();
-};
+import { deleteProduct,fetchProducts }from '../../../services/productService'
 
-const deleteProduct = async (id) => {
-    const response = await fetch(`http://localhost:9999/api/products/${id}`, { method: 'DELETE' });
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return response.json();
-};
 
 export default function ProductList() {
     const queryClient = useQueryClient();
@@ -53,7 +40,6 @@ export default function ProductList() {
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error occurred: {error.message}</div>;
-
     return (
         <div className="container my-4">
             <h2 className="text-center mb-4">Products</h2>
@@ -100,4 +86,5 @@ export default function ProductList() {
             </table>
         </div>
     );
+
 }
