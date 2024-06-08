@@ -1,4 +1,5 @@
 import React from 'react'
+
 import ReactDOM from 'react-dom/client'
 import {Navbar} from './components/layout'
 import Home from "./pages/Home";
@@ -44,12 +45,16 @@ function App() {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
+
         <UserProgressContextProvider>
             <CartContextProvider>
                 <QueryClientProvider client={queryClient}>
+
                     <App/>
+
                 </QueryClientProvider>
             </CartContextProvider>
         </UserProgressContextProvider>
+
     </React.StrictMode>,
 )
