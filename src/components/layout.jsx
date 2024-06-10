@@ -1,3 +1,4 @@
+/*
 import {Link} from "react-router-dom";
 
 export function Navbar() {
@@ -46,3 +47,4 @@ export function Navbar() {
     )
 }
 
+*/
