@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-import { deleteProduct,fetchProducts }from '../../../services/productService'
-
+import { deleteProduct, fetchProducts } from '../../../services/productService';
 
 export default function ProductList() {
     const queryClient = useQueryClient();
 
-    const { data: products, error, isLoading } = useQuery({
-        queryKey: ['products'],
-        queryFn: fetchProducts
+    // Pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    const { data: productsData, error, isLoading } = useQuery({
+        queryKey: ['products', { page: currentPage, limit: itemsPerPage }],
+        queryFn: fetchProducts,
+        keepPreviousData: true,
     });
 
     const mutation = useMutation({
@@ -38,8 +42,16 @@ export default function ProductList() {
         });
     };
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error occurred: {error.message}</div>;
+
+    const products = productsData?.products || [];
+    const totalPages = productsData?.totalPages || 0;
+
     return (
         <div className="container my-4">
             <h2 className="text-center mb-4">Products</h2>
@@ -84,7 +96,22 @@ export default function ProductList() {
                 ))}
                 </tbody>
             </table>
+
+            <nav>
+                <ul className="pagination justify-content-center">
+                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                        <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>Previous</button>
+                    </li>
+                    {[...Array(totalPages)].map((_, index) => (
+                        <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                            <button className="page-link mx-3" onClick={() => handlePageChange(index + 1)}>{index + 1}</button>
+                        </li>
+                    ))}
+                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                        <button className="page-link mx-3" onClick={() => handlePageChange(currentPage + 1)}>Next</button>
+                    </li>
+                </ul>
+            </nav>
         </div>
     );
-
 }

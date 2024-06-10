@@ -1,7 +1,6 @@
 import React from 'react'
 
 import ReactDOM from 'react-dom/client'
-import {Navbar} from './components/layout'
 import Home from "./pages/Home";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Contact from "./pages/Contact";
@@ -18,19 +17,26 @@ import {Footer} from "./components/footer";
 import Header from "./components/Header";
 import {CartContextProvider} from './store/CartContext.jsx';
 import {UserProgressContextProvider} from "./store/UserProgressContext";
+import Auth from "./components/auth/auth";
 
 const queryClient = new QueryClient();
 
+import {Provider, useSelector} from 'react-redux';
+import  store from './store/auth_stoure/index'
+
 
 function App() {
+    const isAuth = useSelector(state=>state.auth.isAuthenticated);
     return (
 
         <BrowserRouter>
             <Header/>
-            <Navbar/>
+            {!isAuth && <Auth />}
+
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/contact" element={<Contact/>}/>
+
                 <Route path="/admin/products" element={<ProductList/>}/>
                 <Route path="/admin/products/create" element={<CreateProduct/>}/>
                 <Route path="/admin/products/update/:id" element={<UpdateProduct/>}/>
@@ -49,9 +55,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <UserProgressContextProvider>
             <CartContextProvider>
                 <QueryClientProvider client={queryClient}>
-
-                    <App/>
-
+                    <Provider store={store}>
+                        <App/>
+                    </Provider>
                 </QueryClientProvider>
             </CartContextProvider>
         </UserProgressContextProvider>

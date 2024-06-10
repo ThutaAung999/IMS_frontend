@@ -4,10 +4,7 @@ export function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg bg-white border-bottom box-shadow">
             <div className="container">
-                <Link className="navbar-brand" to="/">
-                    <img src="/basket.png" alt="..." width="50"  className="me-2" />
-                    Palace IMS
-                </Link>
+
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
                         aria-label="Toggle navigation">

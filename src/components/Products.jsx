@@ -1,24 +1,37 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import ProductItem from "./ProductItem";
 
 export default function Products() {
-    const [loadedProducts, setloadedProducts] = useState([]);
+    const [loadedProducts, setLoadedProducts] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         async function fetchProduct() {
-            const response = await fetch("http://localhost:9999/api/products");
+            try {
+                const response = await fetch("http://localhost:9999/api/products");
 
-            if (!response.ok) {
-                // ...
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                // Assuming the response contains an object with a products array
+                if (!Array.isArray(data.products)) {
+                    throw new Error('Fetched data is not an array');
+                }
+
+                setLoadedProducts(data.products); // Access products array
+            } catch (err) {
+                setError(err.message);
             }
-
-            const products = await response.json();
-            setloadedProducts(products);
         }
 
         fetchProduct();
     }, []);
 
+    if (error) {
+        return <div>An error occurred: {error}</div>;
+    }
     /* return (
          <ul id="products">
              {loadedProducts.map((product) => (
